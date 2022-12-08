@@ -2,10 +2,10 @@ from haversine import haversine, Unit, inverse_haversine
 import math
 
 homecoords = (50.828247, -0.238380)
-destinationCoords = (50.845341, -0.238773)
+destinationCoords = (50.807709, -0.237512)
 
 def convertCoords(lat1,lon1,lat2,lon2): #lat1 & lon1 are original destination
-    heading = -calcBearing(lat1,lon1,lat2,lon2)
+    heading = calcBearing(lat1,lon1,lat2,lon2)
     print(heading)
     dist = haversine((lat1, lon1), (lat2,lon2), unit=Unit.METERS)
     print(dist)
@@ -13,7 +13,7 @@ def convertCoords(lat1,lon1,lat2,lon2): #lat1 & lon1 are original destination
     if heading > 360:
             heading = heading - 360
     heading = math.radians(heading)
-    coords = inverse_haversine((lat1,lon1), dist, -heading, unit=Unit.METERS)
+    coords = inverse_haversine((lat1,lon1), dist, heading, unit=Unit.METERS)
     return(coords[0],coords[1])
 
 def calcBearing(lat,lon,lat2,lon2):
