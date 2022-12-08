@@ -14,7 +14,7 @@ def convertCoords(lat1,lon1,lat2,lon2): #lat1 & lon1 are original destination
             heading = heading - 360
     heading = math.radians(heading)
     coords = inverse_haversine((lat1,lon1), dist, -heading, unit=Unit.METERS)
-    return(coords[1],coords[0])
+    return(coords[0],coords[1])
 
 def calcBearing(lat,lon,lat2,lon2):
 
@@ -28,4 +28,4 @@ def calcBearing(lat,lon,lat2,lon2):
         brng = math.degrees(brng)
         return brng
 
-print(convertCoords(homecoords[1],homecoords[0],destinationCoords[1],destinationCoords[0]))
+print(convertCoords(homecoords[0],homecoords[1],destinationCoords[0],destinationCoords[1]))
