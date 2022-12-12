@@ -30,27 +30,25 @@ def lonlatToAirSim(lon, lat, z):
 
 if __name__ == "__main__":
     SRID = "EPSG:27700"
-    ORIGIN = (50.8292029862927, -0.23565952723679637, 1005)
-    DEST = (50.82874470527534, -0.2540887625824003, 1105)
+    ORIGIN = (50.82896436856539, -0.23574823718288818, 10)
+    DEST = (50.6929031930742, -0.2598201958696718, 50)
     
     heading = get_bearing(*ORIGIN[0:2], *DEST[0:2])
-    heading = heading + 92.67
+    # offset heading as world is rotated by an arbitrary amount while 
+    # switching files between OpenStreetMap, Blender and Unreal Engine.
+    # Heading value below is calculated through experimentation.
+    heading = heading + 91.3    
 
     if heading > 360:
         heading = heading - 360
-
-    distance = haversine(ORIGIN[0:2], DEST[0:2])
+        
+    # The scaling is also off by 0.3%, also due to the file switching.
+    # Once again, the value is found through experimentation.
+    distance = haversine(ORIGIN[0:2], DEST[0:2]) * 0.997
+    print("Distance: ", distance)
 
     corr_coords = inverse_haversine(ORIGIN[0:2], distance = distance, direction = math.radians(heading))
     corr_coords = (*corr_coords, DEST[2])
     print("=" * 75)
     print(f"Corrected coordinates: {corr_coords}")
     print("=" * 75)
-
-    proj = Proj(init= SRID)
-    origin_proj = proj(*ORIGIN[0:2]) + (ORIGIN[2],)
-
-    unreal_coords = lonlatToAirSim(*corr_coords)
-    
-    print()
-    print(f"Unreal Engine Coordinates: {unreal_coords}")
